@@ -12,59 +12,48 @@ class PurchaseAdapter extends TypeAdapter<Purchase> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
+
     return Purchase(
-      key: fields[0] as String?,
-      id: fields[1] as String,
-      sawType: fields[2] as String,
-      thickness: fields[3] as double,
-      width: fields[4] as double,
-      length: fields[5] as double,
-      quantity: fields[6] as int,
-      volume: fields[7] as double,
-      directVolume: fields[8] as double,
-      price: fields[9] as double,
-      date: fields[10] as DateTime,
-      size: fields[11] as String,
+      id: fields[0] as String,
+      sawType: fields[1] as String,
+      thickness: fields[2] as double,
+      width: fields[3] as double,
+      length: fields[4] as double,
+      quantity: fields[5] as int,
+      volume: fields[6] as double,
+      directVolume: fields[7] as double,
+      price: fields[8] as double,
+      date: fields[9] as DateTime,
+      size: fields[10] as String,
+      number: fields[11] as double,
     );
   }
 
   @override
   void write(BinaryWriter writer, Purchase obj) {
     writer
-      ..writeByte(12) // Number of fields
+      ..writeByte(12) // عدد الفيلدات
       ..writeByte(0)
-      ..write(obj.key)
-      ..writeByte(1)
       ..write(obj.id)
-      ..writeByte(2)
+      ..writeByte(1)
       ..write(obj.sawType)
-      ..writeByte(3)
+      ..writeByte(2)
       ..write(obj.thickness)
-      ..writeByte(4)
+      ..writeByte(3)
       ..write(obj.width)
-      ..writeByte(5)
+      ..writeByte(4)
       ..write(obj.length)
-      ..writeByte(6)
+      ..writeByte(5)
       ..write(obj.quantity)
-      ..writeByte(7)
+      ..writeByte(6)
       ..write(obj.volume)
-      ..writeByte(8)
+      ..writeByte(7)
       ..write(obj.directVolume)
-      ..writeByte(9)
+      ..writeByte(8)
       ..write(obj.price)
-      ..writeByte(10)
+      ..writeByte(9)
       ..write(obj.date)
-      ..writeByte(11)
+      ..writeByte(10)
       ..write(obj.size);
   }
-
-  @override
-  int get hashCode => typeId.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-          other is PurchaseAdapter &&
-              runtimeType == other.runtimeType &&
-              typeId == other.typeId;
 }

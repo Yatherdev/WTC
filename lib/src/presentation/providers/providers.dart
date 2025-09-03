@@ -329,9 +329,9 @@ class PurchasesController extends StateNotifier<List<Purchase>> {
     load();
   }
 
-  void load() {
+  Future<void> load() async {
     try {
-      state = repo.getAll();
+      state = await repo.getAll();
     } catch (e) {
       print('Error loading purchases: $e');
       state = [];
@@ -369,5 +369,3 @@ class PurchasesController extends StateNotifier<List<Purchase>> {
   }
 }
 
-// إزالة PurchasesNotifier لأنها مكررة مع PurchasesController
-// بدلاً من ذلك، إذا كنت تحتاج إلى وظائف إضافية، يمكن دمجها في PurchasesController

@@ -3,7 +3,7 @@ part of 'invoice_item.dart';
 
 class InvoiceItemAdapter extends TypeAdapter<InvoiceItem> {
   @override
-  final int typeId = 2;
+  final int typeId = 5;
 
   @override
   InvoiceItem read(BinaryReader reader) {

@@ -33,6 +33,7 @@ class PurchaseDetailsDialog extends ConsumerWidget {
             _buildDetailRow('العرض', '${purchase.width.toStringAsFixed(2)} مم'),
             _buildDetailRow('الطول', '${purchase.length.toStringAsFixed(2)} م'),
             _buildDetailRow('العدد', '${purchase.quantity}'),
+            _buildDetailRow('الرقم', '${purchase.number}'),
             _buildDetailRow('سعر المتر المكعب', '${purchase.price.toStringAsFixed(2)} ج.م'),
             _buildDetailRow('إجمالى التكعيب', '${purchase.volume.toStringAsFixed(3)} m³'),
             _buildDetailRow('سعر المنتج الإجمالي', '${(purchase.price * purchase.volume).toStringAsFixed(2)} ج.م'),

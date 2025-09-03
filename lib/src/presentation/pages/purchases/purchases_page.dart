@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../domain/models/purchase.dart';
-import '../../Widgets/purchases_textform_widget.dart';
+import '../../Widgets/textForm_widget.dart';
 import '../../providers/providers.dart';
 
 class PurchasesPage extends ConsumerStatefulWidget {
@@ -25,6 +25,8 @@ class _PurchasesPageState extends ConsumerState<PurchasesPage> {
   final TextEditingController priceController = TextEditingController();
   final TextEditingController directVolumeController = TextEditingController();
   final TextEditingController searchController = TextEditingController();
+  final TextEditingController numberController = TextEditingController();
+
 
   bool useDirectVolume = false;
 
@@ -50,7 +52,7 @@ class _PurchasesPageState extends ConsumerState<PurchasesPage> {
             builder:
                 (context, setState) => AlertDialog(
                   title: const Center(child: Text('إضافة وارد جديد')),
-                  content: PurchasesTextformWidget(
+                  content: TextFormWidget(
                     sawTypeController: sawTypeController,
                     sizeController: sizeController,
                     thicknessController: thicknessController,
@@ -60,6 +62,7 @@ class _PurchasesPageState extends ConsumerState<PurchasesPage> {
                     priceController: priceController,
                     directVolumeController: directVolumeController,
                     useDirectVolume: useDirectVolume,
+                    numberController: numberController,
                     onToggleUseDirectVolume: (val) {
                       setState(() {
                         useDirectVolume = val;
@@ -83,39 +86,20 @@ class _PurchasesPageState extends ConsumerState<PurchasesPage> {
                                     widthController.text.isNotEmpty &&
                                     lengthController.text.isNotEmpty &&
                                     quantityController.text.isNotEmpty)
-                                : directVolumeController.text.isNotEmpty)) {
-                          final double price =
-                              double.tryParse(priceController.text) ?? 0.0;
+                                : directVolumeController.text.isNotEmpty && numberController.text.isNotEmpty)) {
+                          final double price = double.tryParse(priceController.text) ?? 0.0;
                           final double volume =
                               useDirectVolume
-                                  ? (double.tryParse(
-                                        directVolumeController.text,
-                                      ) ??
-                                      0.0)
-                                  : ((double.tryParse(
-                                                thicknessController.text,
-                                              ) ??
-                                              0.0) *
-                                          (double.tryParse(
-                                                widthController.text,
-                                              ) ??
-                                              0.0) *
-                                          (double.tryParse(
-                                                lengthController.text,
-                                              ) ??
-                                              0.0) *
-                                          (double.tryParse(
-                                                quantityController.text,
-                                              ) ??
-                                              0.0)) /
-                                      1000000;
+                                  ? (double.tryParse(directVolumeController.text,) ?? 0.0)
+                                  : ((double.tryParse(thicknessController.text,) ?? 0.0) *
+                                          (double.tryParse(widthController.text,) ?? 0.0) *
+                                          (double.tryParse(lengthController.text,) ?? 0.0) *
+                                          (double.tryParse(quantityController.text,) ?? 0.0)) / 1000000;
 
                           final purchase = Purchase(
                             id: UniqueKey().toString(),
                             sawType: sawTypeController.text,
-                            thickness:
-                                useDirectVolume
-                                    ? 0.0
+                            thickness: useDirectVolume ? 0.0
                                     : (double.tryParse(
                                           thicknessController.text,
                                         ) ??
@@ -135,6 +119,11 @@ class _PurchasesPageState extends ConsumerState<PurchasesPage> {
                                     ? 0
                                     : (int.tryParse(quantityController.text) ??
                                         0),
+                            number:
+                            useDirectVolume
+                                ? 0
+                                : (double.tryParse(numberController.text) ??
+                                0),
                             volume: volume,
                             directVolume:
                                 useDirectVolume

@@ -1,66 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive/hive.dart';
-import '../../../data/hive/hive_services.dart';
 import '../../../domain/models/client.dart';
 import '../../../domain/models/invoice.dart';
 import '../../providers/providers.dart';
+import '../invoices/invoice_preview_page.dart';
 
 class ClientDetailPage extends ConsumerWidget {
   final String id;
+
   const ClientDetailPage({super.key, required this.id});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final int? parsedId = int.tryParse(id);
-    if (parsedId == null) {
-      return Scaffold(
-        appBar: AppBar(title: const Text('خطأ')),
-        body: const Center(child: Text('معرف العميل غير صالح')),
-      );
-    }
-
-    final clientBox = Hive.box<Client>(HiveService.clientsBox);
-    final client = clientBox.get(parsedId);
-
-    if (client == null) {
-      return Scaffold(
-        appBar: AppBar(title: const Text('خطأ')),
-        body: const Center(child: Text('العميل غير موجود')),
-      );
-    }
-
-    final invoices = ref.watch(invoicesProvider).where((i) => i.clientId == id).toList();
+    final clients = ref.watch(clientsProvider);
+    final invoices = ref.watch(invoicesProvider);
+    final client = clients.firstWhere((c) => c.key.toString() == id, orElse: () => Client(name: 'غير موجود', phone: '', id: ''));
+    final clientInvoices = invoices.where((i) => i.clientId == id).toList();
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('فواتير العميل: ${client.name}'),
+        title: Text(client.name),
         centerTitle: true,
       ),
-      body: invoices.isEmpty
-          ? const Center(
-        child: Text(
-          'لا توجد فواتير لهذا العميل',
-          style: TextStyle(fontSize: 16, color: Colors.grey),
-        ),
-      )
-          : ListView(
-        padding: const EdgeInsets.all(12),
-        children: invoices
-            .map(
-              (i) => Card(
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(children: [
+          Text('الاسم: ${client.name}', style: const TextStyle(fontSize: 18)),
+          Text('رقم الهاتف: ${client.phone}', style: const TextStyle(fontSize: 18)),
+          const Divider(thickness: 2),
+          const Text('الفواتير:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          if (clientInvoices.isEmpty)
+            const Center(child: Text('لا توجد فواتير لهذا العميل', style: TextStyle(color: Colors.grey))),
+          ...clientInvoices.map((invoice) => Card(
             child: ListTile(
-              title: Text('#${i.number}'),
-              subtitle: Text(i.date.toLocal().toString().split(' ').first),
-              trailing: Text(i.totalAfterDiscount.toStringAsFixed(2)),
-              leading: i.paymentType == PaymentType.credit
-                  ? const Icon(Icons.credit_card, color: Colors.red) // 🟢 أيقونة للفواتير الآجلة
-                  : const Icon(Icons.money, color: Colors.green), // 🟢 أيقونة للفواتير الكاش
-              //onTap: () => Navigator.push(context, MaterialPageRoute(builder: builder)),
+              leading: invoice.isPaid
+                  ? const Icon(Icons.check_circle, color: Colors.green)
+                  : const Icon(Icons.schedule),
+              title: Text('فاتورة #${invoice.number}'),
+              subtitle: Text(invoice.date.toString().substring(0, 16)),
+              trailing: Text(invoice.totalAfterDiscount.toStringAsFixed(2)),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => InvoicePreviewPage(invoice: invoice),
+                  ),
+                );
+              },
             ),
-          ),
-        )
-            .toList(),
+          )),
+        ],),
       ),
     );
   }

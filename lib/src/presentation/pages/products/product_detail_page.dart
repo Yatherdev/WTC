@@ -1,22 +1,13 @@
-import 'package:calc_wood/src/presentation/pages/products/product_form_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../../data/hive/hive_services.dart';
+import '../../../domain/models/client.dart';
 import '../../providers/providers.dart';
 import '../../../domain/models/product_item.dart';
 import '../invoices/invoice_form_page.dart';
 
-// افترض أن لدينا نموذج Client (يجب تعريفه في domain/models/client.dart على سبيل المثال)
-class Client {
-  final String name;
-  final String phone;
-  final int? key;
-
-  Client({required this.name, required this.phone, this.key});
-}
 
 class ProductDetailPage extends ConsumerStatefulWidget {
   final String hiveKey; // استخدام hiveKey كسلسلة
@@ -233,7 +224,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage> {
                     if (existingClient.name.isEmpty) {
                       // إضافة عميل جديد (افترض وجود box للعملاء في HiveService.clientsBox)
                       final clientBox = Hive.box<Client>(HiveService.clientsBox); // افترض تعريف clientsBox
-                      final newClient = Client(name: clientName, phone: clientPhone);
+                      final newClient = Client(name: clientName, phone: clientPhone, id: '');
                       await clientBox.add(newClient);
                       ref.invalidate(clientsProvider);
                       ScaffoldMessenger.of(context).showSnackBar(

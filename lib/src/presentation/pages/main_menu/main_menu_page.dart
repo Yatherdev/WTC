@@ -1,3 +1,4 @@
+import 'package:calc_wood/src/presentation/pages/invoices/invoice_date_page.dart';
 import 'package:calc_wood/src/presentation/pages/invoices/invoice_page.dart';
 import 'package:flutter/material.dart';
 import '../cashbox/cashbox_page.dart';
@@ -5,9 +6,7 @@ import '../clients/client_form_page.dart';
 import '../clients/clients_page.dart';
 import '../expense/expenses_page.dart';
 import '../invoices/invoice_form_page.dart';
-import '../invoices/invoice_list_page.dart';
 import '../invoices/invoice_preview_page.dart';
-import '../products/product_form_page.dart';
 import '../products/product_list_page.dart';
 import '../purchases/purchases_dates_page.dart';
 import '../reports/daily_journal_page.dart';
@@ -18,18 +17,17 @@ class MainMenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final pages = [
+      {'title': 'invouce date page', 'icon': Icons.account_balance_wallet, 'page': const InvoiceDatesPage()},
       {'title': 'Cashbox', 'icon': Icons.account_balance_wallet, 'page': const CashboxPage()},
       {'title': 'Client Form Page', 'icon': Icons.person_add, 'page': const ClientFormDialog()},
       {'title': 'Clients Page', 'icon': Icons.group, 'page': const ClientsPage()},
       {'title': 'Expenses Page', 'icon': Icons.money_off, 'page': const ExpensesPage()},
-      {'title': 'Invoice Form Page', 'icon': Icons.receipt_long, 'page': const InvoiceFormPage()},
-      {'title': 'Invoice List Page', 'icon': Icons.list_alt, 'page': const InvoicesListPage()},
-      {'title': 'Invoice Preview Page', 'icon': Icons.preview, 'page': const InvoicePreviewPage()},
-      {'title': 'Product Form', 'icon': Icons.add_box, 'page': const ProductFormPage()},
+      {'title': 'Invoice Form Page', 'icon': Icons.receipt_long, 'page': const InvoiceFormPage(data: {},)},
+      //{'title': 'Invoice Preview Page', 'icon': Icons.preview, 'page': const InvoicePreviewPage(invoice: null,)},
       {'title': 'Product List', 'icon': Icons.view_list, 'page': const ProductListPage()},
       {'title': 'Purchases Dates Page', 'icon': Icons.date_range, 'page': const PurchasesDatesPage()},
       {'title': 'Daily Journal Page', 'icon': Icons.book, 'page': const DailyJournalPage()},
-      {'title': 'Invoice', 'icon': Icons.book, 'page': const InvoicePage(data: {})},
+      //{'title': 'Invoice', 'icon': Icons.book, 'page': const InvoicePage(date: null, invoices: [],)},
 
     ];
 

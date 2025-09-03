@@ -4,7 +4,7 @@ import 'product_variant.dart';
 
 part 'invoice_item.g.dart'; // ملف يتم إنشاؤه تلقائيًا بواسطة build_runner
 
-@HiveType(typeId: 2) // تأكد من أن typeId لا يتعارض مع نماذج أخرى
+@HiveType(typeId: 5) // تأكد من أن typeId لا يتعارض مع نماذج أخرى
 class InvoiceItem {
   @HiveField(0)
   final ProductItem product;

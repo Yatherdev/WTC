@@ -1,7 +1,6 @@
 import 'package:calc_wood/src/presentation/pages/purchases/purchases_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../domain/models/purchase.dart';
 import 'add_purchase_dialog.dart';
 import '../../providers/providers.dart';
 

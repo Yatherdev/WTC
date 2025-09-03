@@ -1,34 +1,45 @@
 import 'package:hive/hive.dart';
 
 @HiveType(typeId: 9)
-class Purchase {
+class Purchase extends HiveObject { // ✅ خلي الموديل يورث HiveObject
   @HiveField(0)
-  String? key;
-  @HiveField(1)
   final String id;
-  @HiveField(2)
+
+  @HiveField(1)
   final String sawType;
-  @HiveField(3)
+
+  @HiveField(2)
   final double thickness;
-  @HiveField(4)
+
+  @HiveField(3)
   final double width;
-  @HiveField(5)
+
+  @HiveField(4)
   final double length;
-  @HiveField(6)
+
+  @HiveField(5)
   final int quantity;
-  @HiveField(7)
+
+  @HiveField(6)
   final double volume;
-  @HiveField(8)
+
+  @HiveField(7)
   final double directVolume;
-  @HiveField(9)
+
+  @HiveField(8)
   final double price;
-  @HiveField(10)
+
+  @HiveField(9)
   final DateTime date;
-  @HiveField(11)
+
+  @HiveField(10)
   final String size;
 
+  @HiveField(11)
+  final double number;
+
   Purchase({
-    this.key,
+    required this.number,
     required this.id,
     required this.sawType,
     required this.thickness,

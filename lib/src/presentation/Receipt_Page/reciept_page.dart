@@ -75,7 +75,7 @@ class ReceiptPage extends ConsumerWidget {
                         final bytes = await generateInvoicePdf(
                           invoice: invoice,
                           shopName: 'متجري', // يمكنك تغييره حسب الحاجة
-                          clientName: clientName,
+                          //clientName: clientName,
                         );
                         final dir = await getApplicationDocumentsDirectory();
                         final file = File('${dir.path}/receipt_${invoice.id}.pdf');

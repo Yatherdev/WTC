@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class PurchasesTextformWidget extends StatelessWidget {
+class TextFormWidget extends StatelessWidget {
   final TextEditingController sawTypeController;
   final TextEditingController thicknessController;
   final TextEditingController widthController;
@@ -9,11 +9,12 @@ class PurchasesTextformWidget extends StatelessWidget {
   final TextEditingController directVolumeController;
   final TextEditingController priceController;
   final TextEditingController sizeController;
+  final TextEditingController numberController;
 
   final bool useDirectVolume;
   final ValueChanged<bool> onToggleUseDirectVolume;
 
-  const PurchasesTextformWidget({
+  const TextFormWidget({
     super.key,
     required this.sawTypeController,
     required this.thicknessController,
@@ -25,6 +26,7 @@ class PurchasesTextformWidget extends StatelessWidget {
     required this.sizeController,
     required this.useDirectVolume,
     required this.onToggleUseDirectVolume,
+    required this.numberController,
   });
 
   @override
@@ -33,6 +35,11 @@ class PurchasesTextformWidget extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          SwitchListTile(
+            title: const Text('إدخال التكعيب مباشرة'),
+            value: useDirectVolume,
+            onChanged: onToggleUseDirectVolume,
+          ),
           Container(
             width: 400,
             child: Row(
@@ -60,11 +67,6 @@ class PurchasesTextformWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10),
-          SwitchListTile(
-            title: const Text('إدخال التكعيب مباشرة'),
-            value: useDirectVolume,
-            onChanged: onToggleUseDirectVolume,
-          ),
           if (!useDirectVolume) ...[
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -111,6 +113,14 @@ class PurchasesTextformWidget extends StatelessWidget {
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
               decoration: const InputDecoration(
                 labelText: 'التكعيب المباشر (m³)',
+              ),
+            ),
+            const SizedBox(height: 10),
+            TextField(
+              controller: numberController,
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              decoration: const InputDecoration(
+                labelText: 'الــرقــم',
               ),
             ),
           ],

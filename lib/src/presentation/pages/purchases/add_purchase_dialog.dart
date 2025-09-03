@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../domain/models/purchase.dart';
-import '../../Widgets/purchases_textform_widget.dart';
+import '../../../domain/models/purchase.g.dart';
+import '../../Widgets/textForm_widget.dart';
 import '../../providers/providers.dart';
+import '../../../data/hive/hive_services.dart';
 
 class AddPurchaseDialog extends StatefulWidget {
   final WidgetRef ref;
@@ -23,9 +26,9 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
   final TextEditingController quantityController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   final TextEditingController directVolumeController = TextEditingController();
-  final TextEditingController searchController = TextEditingController();
+  final TextEditingController numberController = TextEditingController();
   bool useDirectVolume = false;
-  DateTime selectedDate = DateTime.now();
+  late final GlobalKey<FormState> formKey;
 
   @override
   void dispose() {
@@ -37,7 +40,6 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
     quantityController.dispose();
     priceController.dispose();
     directVolumeController.dispose();
-    searchController.dispose();
     super.dispose();
   }
 
@@ -45,7 +47,7 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Center(child: Text('إضافة وارد جديد')),
-      content: PurchasesTextformWidget(
+      content: TextFormWidget(
         useDirectVolume: useDirectVolume,
         onToggleUseDirectVolume: (val) {
           setState(() {
@@ -60,6 +62,7 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
         directVolumeController: directVolumeController,
         priceController: priceController,
         sizeController: sizeController,
+        numberController: numberController,
       ),
       actionsAlignment: MainAxisAlignment.center,
       actions: [
@@ -75,45 +78,30 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
                 sizeController.text.isNotEmpty &&
                 (!useDirectVolume
                     ? thicknessController.text.isNotEmpty &&
-                        widthController.text.isNotEmpty &&
-                        lengthController.text.isNotEmpty &&
-                        quantityController.text.isNotEmpty
-                    : directVolumeController.text.isNotEmpty)) {
+                    widthController.text.isNotEmpty &&
+                    lengthController.text.isNotEmpty &&
+                    quantityController.text.isNotEmpty
+                    : directVolumeController.text.isNotEmpty && numberController.text.isNotEmpty))
+            {
               final double price = double.tryParse(priceController.text) ?? 0.0;
-              final double volume =
-                  useDirectVolume
-                      ? (double.tryParse(directVolumeController.text) ?? 0.0)
-                      : ((double.tryParse(thicknessController.text) ?? 0.0) *
-                              (double.tryParse(widthController.text) ?? 0.0) *
-                              (double.tryParse(lengthController.text) ?? 0.0) *
-                              (double.tryParse(quantityController.text) ??
-                                  0.0)) /
-                          1000000;
+              final double volume = useDirectVolume
+                  ? (double.tryParse(directVolumeController.text) ?? 0.0)
+                  : ((double.tryParse(thicknessController.text) ?? 0.0) *
+                  (double.tryParse(widthController.text) ?? 0.0) *
+                  (double.tryParse(lengthController.text) ?? 0.0) *
+                  (double.tryParse(quantityController.text) ?? 0.0)) /
+                  1000000;
 
               final purchase = Purchase(
                 id: UniqueKey().toString(),
                 sawType: sawTypeController.text,
-                thickness:
-                    useDirectVolume
-                        ? 0.0
-                        : (double.tryParse(thicknessController.text) ?? 0.0),
-                width:
-                    useDirectVolume
-                        ? 0.0
-                        : (double.tryParse(widthController.text) ?? 0.0),
-                length:
-                    useDirectVolume
-                        ? 0.0
-                        : (double.tryParse(lengthController.text) ?? 0.0),
-                quantity:
-                    useDirectVolume
-                        ? 0
-                        : (int.tryParse(quantityController.text) ?? 0),
+                thickness: useDirectVolume ? 0.0 : (double.tryParse(thicknessController.text) ?? 0.0),
+                width: useDirectVolume ? 0.0 : (double.tryParse(widthController.text) ?? 0.0),
+                length: useDirectVolume ? 0.0 : (double.tryParse(lengthController.text) ?? 0.0),
+                quantity: useDirectVolume ? 0 : (int.tryParse(quantityController.text) ?? 0),
+                number: double.tryParse(numberController.text) ?? 0,
                 volume: volume,
-                directVolume:
-                    useDirectVolume
-                        ? (double.tryParse(directVolumeController.text) ?? 0.0)
-                        : 0.0,
+                directVolume: useDirectVolume ? (double.tryParse(directVolumeController.text) ?? 0.0) : 0.0,
                 price: price,
                 date: DateTime.now(),
                 size: sizeController.text,
@@ -121,14 +109,14 @@ class _AddPurchaseDialogState extends State<AddPurchaseDialog> {
 
               try {
                 final notifier = widget.ref.read(purchasesProvider.notifier);
-                await notifier.add(purchase);
+                await notifier.add(purchase); // ✅ مش محتاج key
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('تمت الإضافة بنجاح')),
                 );
               } catch (e) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('خطأ أثناء الإضافة: $e')),
+                  SnackBar(content: Text(' خطأ أثناء الإضافة: $e')),
                 );
               }
             } else {

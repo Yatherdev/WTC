@@ -3,47 +3,46 @@ import '../../domain/models/cachbox.dart';
 import '../../domain/models/cachbox.g.dart';
 import '../../domain/models/client.g.dart';
 import '../../domain/models/product_item.dart';
+import '../../domain/models/product_variant.dart';
 import '../../domain/models/client.dart';
 import '../../domain/models/invoice.dart';
 import '../../domain/models/invoice_item.dart';
 import '../../domain/models/expense.dart';
 import '../../domain/models/purchase.dart';
-import '../../domain/models/product_variant.dart';
 import '../../domain/models/purchase.g.dart';
 
 class HiveService {
-  static const String productsBox = 'productsBox';
-  static const String clientsBox = 'clientsBox';
-  static const String invoicesBox = 'invoicesBox';
-  static const String expensesBox = 'expensesBox';
-  static const String countersBox = 'countersBox';
-  static const String cashboxBox = 'cashboxBox';
-  static const String purchasesBox = 'purchasesBox';
+  static const productsBox = 'products_box_v2';
+  static const clientsBox = 'clients_box_v1';
+  static const invoicesBox = 'invoices_box_v1';
+  static const expensesBox = 'expenses_box_v1';
+  static const cashboxBox = 'cashbox_box_v1';
+  static const purchasesBox = 'purchases_box_v1';
+  static const countersBox = 'counters_box_v1';
 
   static Future<void> init() async {
-    try {
-      print('Starting Hive initialization...');
-      await Hive.initFlutter();
-      Hive.registerAdapter(ProductItemAdapter());
-      Hive.registerAdapter(ProductVariantAdapter());
-      Hive.registerAdapter(ClientAdapter());
-      Hive.registerAdapter(InvoiceAdapter());
-      Hive.registerAdapter(InvoiceItemAdapter());
-      Hive.registerAdapter(ExpenseAdapter());
-      Hive.registerAdapter(CashboxAdapter());
+    await Hive.initFlutter();
+    Hive.registerAdapter(ClientAdapter());
+    Hive.registerAdapter(ProductItemAdapter());
+    Hive.registerAdapter(ProductVariantAdapter());
+    Hive.registerAdapter(InvoiceAdapter());
+    Hive.registerAdapter(InvoiceItemAdapter());
+    Hive.registerAdapter(ExpenseAdapter());
+    Hive.registerAdapter(CashboxAdapter());
+    if (!Hive.isAdapterRegistered(9)) {
       Hive.registerAdapter(PurchaseAdapter());
-      Hive.registerAdapter(PaymentTypeAdapter());
-      await Hive.openBox<ProductItem>(productsBox);
-      await Hive.openBox<Client>(clientsBox);
-      await Hive.openBox<Invoice>(invoicesBox);
-      await Hive.openBox<Expense>(expensesBox);
-      await Hive.openBox<int>(countersBox);
-      await Hive.openBox<Cashbox>(cashboxBox);
-      await Hive.openBox<Purchase>(purchasesBox);
-      print('Hive initialization completed');
-    } catch (e) {
-      print('Error in Hive initialization: $e');
-      rethrow;
     }
+
+    await Hive.openBox<Client>(clientsBox);
+    await Hive.openBox<ProductItem>(productsBox);
+    await Hive.openBox<ProductVariant>('product_variants_box_v1');
+    await Hive.openBox<Invoice>(invoicesBox);
+    await Hive.openBox<InvoiceItem>('invoice_items_box_v1');
+    await Hive.openBox<Expense>(expensesBox);
+    await Hive.openBox<Cashbox>(cashboxBox);
+    if (!Hive.isBoxOpen(HiveService.purchasesBox)) {
+      await Hive.openBox<Purchase>(HiveService.purchasesBox);
+    }
+    await Hive.openBox<int>(countersBox);
   }
 }

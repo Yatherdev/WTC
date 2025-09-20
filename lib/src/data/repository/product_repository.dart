@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-
 import '../../domain/models/product_item.dart';
 import '../hive/hive_services.dart';
 

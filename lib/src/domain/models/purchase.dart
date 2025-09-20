@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+part 'purchase.g.dart';
 
 @HiveType(typeId: 9)
 class Purchase extends HiveObject { // ✅ خلي الموديل يورث HiveObject

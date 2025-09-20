@@ -1,6 +1,5 @@
 import 'package:hive/hive.dart';
 import 'product_item.dart';
-import 'product_variant.dart';
 
 part 'invoice_item.g.dart'; // ملف يتم إنشاؤه تلقائيًا بواسطة build_runner
 
@@ -8,25 +7,23 @@ part 'invoice_item.g.dart'; // ملف يتم إنشاؤه تلقائيًا بو�
 class InvoiceItem {
   @HiveField(0)
   final ProductItem product;
-
   @HiveField(1)
   final double pricePerM3;
-
   @HiveField(2)
   final double volume;
-
   @HiveField(3) // إضافة حقل جديد
   final double? totalValue;
   @HiveField(4)
-
   final double? length;
   @HiveField(5)
-// قد تكون اختيارية
   final int? quantity;
+  @HiveField(6)
+  final String? size;
 
   double get subtotal => volume * pricePerM3;
 
   InvoiceItem({
+    required this.size,
     required this.length,
     required this.quantity,
     required this.product,

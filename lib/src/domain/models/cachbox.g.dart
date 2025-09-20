@@ -1,11 +1,14 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
 
-import 'package:hive/hive.dart';
+part of 'cachbox.dart';
 
-import 'cachbox.dart';
+// **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
 
 class CashboxAdapter extends TypeAdapter<Cashbox> {
   @override
-  final int typeId = 10; // Changed to 10 to avoid conflict with Client (typeId: 3)
+  final int typeId = 7;
 
   @override
   Cashbox read(BinaryReader reader) {
@@ -32,7 +35,7 @@ class CashboxAdapter extends TypeAdapter<Cashbox> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is CashboxAdapter &&
-              runtimeType == other.runtimeType &&
-              typeId == other.typeId;
+      other is CashboxAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

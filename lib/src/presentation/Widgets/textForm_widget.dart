@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TextFormWidget extends StatelessWidget {
   final TextEditingController sawTypeController;
@@ -46,7 +47,7 @@ class TextFormWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: 130,
+                  width: 120.w,
                   child: TextField(
                     controller: sawTypeController,
                     decoration: const InputDecoration(
@@ -56,11 +57,13 @@ class TextFormWidget extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 SizedBox(
-                  width: 130,
+                  width: 120.w,
                   child: TextField(
                     keyboardType: TextInputType.text,
                     controller: sizeController,
-                    decoration: const InputDecoration(labelText: 'المقاس'),
+                    decoration: const InputDecoration(
+                        labelText: 'المقاس'
+                    ),
                   ),
                 ),
               ],
@@ -71,18 +74,19 @@ class TextFormWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(width: 130,
+                SizedBox(width: 120.w,
                   child: TextField(
                     controller: thicknessController,
                     keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                    decoration: const InputDecoration(labelText: 'السمك (مم)'),
+                    decoration: const InputDecoration(labelText: 'العرض (مم)'),
                   ),
                 ),
-                SizedBox(width: 130,
+                SizedBox(
+                  width: 120.w,
                   child: TextField(
                     controller: widthController,
                     keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                    decoration: const InputDecoration(labelText: 'العرض (مم)'),
+                    decoration: const InputDecoration(labelText: 'السمك (مم)'),
                   ),
                 ),
               ],
@@ -91,14 +95,14 @@ class TextFormWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(width: 130,
+                SizedBox(width: 120.w,
                   child: TextField(
                     controller: lengthController,
                     keyboardType: const TextInputType.numberWithOptions(decimal: true),
                     decoration: const InputDecoration(labelText: 'الطول (مم)'),
                   ),
                 ),
-                SizedBox(width: 130,
+                SizedBox(width: 120.w,
                   child: TextField(
                     controller: quantityController,
                     keyboardType: TextInputType.number,

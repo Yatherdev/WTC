@@ -1,6 +1,10 @@
-import 'package:hive/hive.dart';
+// GENERATED CODE - DO NOT MODIFY BY HAND
 
-import 'client.dart';
+part of 'client.dart';
+
+// **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
 
 class ClientAdapter extends TypeAdapter<Client> {
   @override
@@ -43,7 +47,7 @@ class ClientAdapter extends TypeAdapter<Client> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is ClientAdapter &&
-              runtimeType == other.runtimeType &&
-              typeId == other.typeId;
+      other is ClientAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

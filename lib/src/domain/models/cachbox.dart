@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+part 'cachbox.g.dart';
 
 @HiveType(typeId: 7)
 class Cashbox extends HiveObject {

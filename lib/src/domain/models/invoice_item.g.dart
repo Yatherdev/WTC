@@ -1,5 +1,10 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+
 part of 'invoice_item.dart';
+
+// **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
 
 class InvoiceItemAdapter extends TypeAdapter<InvoiceItem> {
   @override
@@ -12,19 +17,20 @@ class InvoiceItemAdapter extends TypeAdapter<InvoiceItem> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return InvoiceItem(
+      size: fields[6] as String?,
+      length: fields[4] as double?,
+      quantity: fields[5] as int?,
       product: fields[0] as ProductItem,
       pricePerM3: fields[1] as double,
       volume: fields[2] as double,
       totalValue: fields[3] as double?,
-      length: fields[4] as double?,
-      quantity: fields[5] as int?,
     );
   }
 
   @override
   void write(BinaryWriter writer, InvoiceItem obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.product)
       ..writeByte(1)
@@ -32,7 +38,13 @@ class InvoiceItemAdapter extends TypeAdapter<InvoiceItem> {
       ..writeByte(2)
       ..write(obj.volume)
       ..writeByte(3)
-      ..write(obj.totalValue);
+      ..write(obj.totalValue)
+      ..writeByte(4)
+      ..write(obj.length)
+      ..writeByte(5)
+      ..write(obj.quantity)
+      ..writeByte(6)
+      ..write(obj.size);
   }
 
   @override

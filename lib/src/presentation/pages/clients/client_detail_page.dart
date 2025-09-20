@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../domain/models/client.dart';
-import '../../../domain/models/invoice.dart';
 import '../../providers/providers.dart';
 import '../invoices/invoice_preview_page.dart';
 

@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-
+part 'client.g.dart';
 
 @HiveType(typeId: 3)
 class Client extends HiveObject {

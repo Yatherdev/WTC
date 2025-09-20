@@ -7,7 +7,7 @@ import '../../providers/providers.dart';
 import 'invoice_preview_page.dart';
 
 class InvoicePage extends ConsumerWidget {
-  final DateTime date;
+  final DateTime? date;
   final List<Invoice> invoices;
 
   const InvoicePage({super.key, required this.date, required this.invoices});
@@ -18,24 +18,44 @@ class InvoicePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('فواتير بتاريخ ${DateFormat('yyyy-MM-dd').format(date)}'),
+        title: Text('الفواتير '),
         centerTitle: true,
       ),
-      body: ListView(
+      body: ListView.builder(
         padding: const EdgeInsets.all(12),
-        children: invoices.map((invoice) {
+        itemCount: invoices.length,
+        itemBuilder: (context, index) {
+          final invoice = invoices[index];
           final client = clients.firstWhere(
-                (c) => c.key.toString() == invoice.clientId,
+            (c) => c.key.toString() == invoice.clientId,
             orElse: () => Client(name: 'بدون اسم', phone: '', id: ''),
           );
+
+          final itemsCount = invoice.items.length;
+          final formattedDate = DateFormat('yyyy/MM/dd - HH:mm').format(invoice.date);
+          final total = invoice.totalAfterDiscount.toStringAsFixed(2);
+          final paidChip = Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: BoxDecoration(
+              color: invoice.isPaid ? Colors.green.withOpacity(0.1) : Colors.orange.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: invoice.isPaid ? Colors.green : Colors.orange),
+            ),
+            child: Text(
+              invoice.isPaid ? 'كــاش' : 'آجــل',
+              style: TextStyle(
+                color: invoice.isPaid ? Colors.green[700] : Colors.orange[700],
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          );
+
           return Card(
-            child: ListTile(
-              leading: invoice.isPaid
-                  ? const Icon(Icons.check_circle, color: Colors.green)
-                  : const Icon(Icons.schedule),
-              title: Text('العميل: ${client.name}'),
-              subtitle: Text('رقم الفاتورة: #${invoice.number}'),
-              trailing: Text(invoice.totalAfterDiscount.toStringAsFixed(2)),
+            margin: const EdgeInsets.symmetric(vertical: 5),
+            elevation: 3,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(10),
               onTap: () {
                 Navigator.push(
                   context,
@@ -44,9 +64,39 @@ class InvoicePage extends ConsumerWidget {
                   ),
                 );
               },
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        paidChip,
+                        Text(
+                          "العميل : ${client.name}",
+                          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Expanded(child: Text('$itemsCount : عدد العناصر  ', style: const TextStyle(color: Colors.black54))),
+                        Text(
+                          ' رقم الفاتوره : ${invoice.number}',
+                          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                        ),
+
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                  ],
+                ),
+              ),
             ),
           );
-        }).toList(),
+        },
       ),
     );
   }

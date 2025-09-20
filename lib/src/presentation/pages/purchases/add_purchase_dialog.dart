@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-
 import '../../../domain/models/purchase.dart';
-import '../../../domain/models/purchase.g.dart';
 import '../../Widgets/textForm_widget.dart';
 import '../../providers/providers.dart';
-import '../../../data/hive/hive_services.dart';
+
 
 class AddPurchaseDialog extends StatefulWidget {
   final WidgetRef ref;

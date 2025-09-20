@@ -1,15 +1,11 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../domain/models/purchase.dart';
-import '../../domain/models/purchase.g.dart';
 import '../hive/hive_services.dart';
 
 class PurchaseRepository {
   Box<Purchase> get box => Hive.box<Purchase>(HiveService.purchasesBox);
 
-  Future<Box<Purchase>> _ensureAdapterAndBox() async {
-    if (!Hive.isAdapterRegistered(9)) {
-      Hive.registerAdapter(PurchaseAdapter());
-    }
+  Future<Box<Purchase>> _ensureBoxOpened() async {
     if (!Hive.isBoxOpen(HiveService.purchasesBox)) {
       return await Hive.openBox<Purchase>(HiveService.purchasesBox);
     }
@@ -17,31 +13,28 @@ class PurchaseRepository {
   }
 
   Future<List<Purchase>> getAll() async {
-    final targetBox = await _ensureAdapterAndBox();
+    final targetBox = await _ensureBoxOpened();
     return targetBox.values.toList();
   }
 
   Future<void> add(Purchase purchase) async {
-    final targetBox = await _ensureAdapterAndBox();
+    final targetBox = await _ensureBoxOpened();
     await targetBox.add(purchase);
-    // ✅ مش محتاج تعمل put تاني
   }
 
   Future<void> update(Purchase purchase) async {
-    await _ensureAdapterAndBox();
+    await _ensureBoxOpened();
     if (purchase.isInBox) {
       await purchase.save();
-      // ✅ save هيعمل update باستخدام key اللي عند Hive
     } else {
       throw Exception('Purchase is not in box, cannot update');
     }
   }
 
   Future<void> delete(Purchase purchase) async {
-    await _ensureAdapterAndBox();
+    await _ensureBoxOpened();
     if (purchase.isInBox) {
       await purchase.delete();
-      // ✅ delete هيحذف باستخدام المفتاح اللي مع Hive
     } else {
       throw Exception('Purchase is not in box, cannot delete');
     }

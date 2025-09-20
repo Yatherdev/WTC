@@ -1,6 +1,8 @@
+import 'package:calc_wood/src/core/theme/app_theme.dart';
 import 'package:calc_wood/src/presentation/pages/purchases/purchase_detail_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../domain/models/purchase.dart';
 import '../../Widgets/textForm_widget.dart';
@@ -274,13 +276,13 @@ class _PurchasesPageState extends ConsumerState<PurchasesPage> {
           Container(
             margin: EdgeInsets.all(8),
             decoration: BoxDecoration(
-                color: Colors.blueGrey.withOpacity(.5),
+                color: AppColors.green5,
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(20)
             ),
             width: double.infinity,
             height: 50,
-            child: Center(child: Text("  إجمالى التكعيب :    ${totalVolume.toStringAsFixed(2)}")),
+            child: Center(child: Text("  إجمالى التكعيب  :  ${totalVolume.toStringAsFixed(2)}",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 15.sp),),),
           ),
         ],
       ),
